@@ -12,6 +12,7 @@ const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
 const postRoutes = require("./routes/posts");
+const commentRoutes = require("./routes/comments");
 
 // Passport config
 require("./config/passport")(passport);
@@ -55,6 +56,7 @@ app.use(flash());
 // Setup Routes for which the server is listening
 app.use("/", mainRoutes);
 app.use("/post", postRoutes);
+app.use("/comment", commentRoutes);
 
 // Server Running
 app.listen(process.env.PORT, () => {
