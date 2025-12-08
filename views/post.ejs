@@ -48,9 +48,40 @@
     <ul>
       <% for(var i=0; i<comments.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
-            <%= comments[i].comment%>
+            <span>
+              <%=comments[i].user.userName  %>
+            </span>
+            <br>
+            <span><%= comments[i].comment%></span>
+            <br>
+            <span>
+              <form
+                class="col-1"
+                action="/comment/likeComment/<%=comments[i]._id %>?_method=PUT"
+                method="POST"
+              >
+                <button class="btn btn-primary fa fa-heart" type="submit"></button>
+              </form>
+              <h3 class="col-3">Likes: <%= comments[i].likes %></h3>
+            </span>
           </li>
+          
+          
+            <li>
+              
+            <form
+              action="/comment/deleteComment/<%=comments[i]._id %>?_method=DELETE"
+              method="POST"
+              class="col-3"
+            >
+              <button class="btn btn-primary fa fa-trash" type="submit"></button>
+            </form>
+        
+            </li>
+        
+      
       <% } %>
+      
     </ul>
 
     <div class="col-6 mt-5">
