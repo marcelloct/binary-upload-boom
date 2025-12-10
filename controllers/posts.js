@@ -5,8 +5,12 @@ const Comment = require("../models/Comment");
 
 module.exports = {
   getProfile: async (req, res) => {
+    console.log(req.user);
     try {
+      // Since we have a session each request contains the logged-in users info: req.user
+      // Grabbing just the post of the logged-in user
       const posts = await Post.find({ user: req.user.id });
+      // Sending post and user data feom mongodb to ejs
       res.render("profile.ejs", { posts: posts, user: req.user });
     } catch (err) {
       console.log(err);
@@ -31,8 +35,11 @@ module.exports = {
   },
   getPost: async (req, res) => {
     try {
+      // req.params.id parameter comes from post routes. router.get("/:id")
+      // e.g(localhost::8000/4jf375g478j)
       const post = await Post.findById(req.params.id);
       const comments = await Comment.find({ post: req.params.id })
+        .populate("user")
         .sort({ createdAt: "desc" })
         .lean();
       res.render("post.ejs", {
@@ -49,12 +56,12 @@ module.exports = {
       // Upload image to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
 
+      // the above cloudinary request responds with url to media and media id that you will need when deleting content from there
       await Post.create({
         title: req.body.title,
         image: result.secure_url,
         cloudinaryId: result.public_id,
         caption: req.body.caption,
-        likes: 0,
         user: req.user.id,
       });
       console.log("Post has been added!");
@@ -89,6 +96,39 @@ module.exports = {
       res.redirect("/profile");
     } catch (err) {
       res.redirect("/profile");
+    }
+  },
+  toggleLike: async (req, res) => {
+    const userId = req.user.id;
+    const postId = req.params.id;
+
+    try {
+      const post = await Post.findById(postId);
+
+      if (!post) return res.status(404).json({ message: "Post not found" });
+
+      const hasLiked = post.likedBy.includes(userId);
+
+      if (hasLiked) {
+        // Remove LIKE
+        await Post.findByIdAndUpdate(postId, {
+          $pull: { likedBy: userId },
+          $inc: { likes: -1 },
+        });
+
+        return res.json({ liked: false });
+      } else {
+        // Add LIKE
+        await Post.findByIdAndUpdate(postId, {
+          $addToSet: { likedBy: userId }, // prevents duplicates
+          $inc: { likes: +1 },
+        });
+
+        return res.json({ liked: true });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
     }
   },
 };

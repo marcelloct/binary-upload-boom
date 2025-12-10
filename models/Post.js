@@ -19,8 +19,14 @@ const PostSchema = new mongoose.Schema({
   },
   likes: {
     type: Number,
-    required: true,
+    default: 0,
   },
+  likedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -31,4 +37,6 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
+// MongoDB Collection named here - will give lowercase plural of name
+// e.g: Post = posts / User = users
 module.exports = mongoose.model("Post", PostSchema);
