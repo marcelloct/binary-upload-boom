@@ -35,6 +35,40 @@ module.exports = {
       console.log(err);
     }
   },
+  toggleLike: async (req, res) => {
+    const userId = req.user._id;
+    const commentId = req.params.id;
+
+    try {
+      const comment = await Comment.findById(commentId);
+
+      if (!comment)
+        return res.status(404).json({ message: "Comment not found" });
+
+      const hasLiked = comment.likedBy.includes(userId);
+
+      if (hasLiked) {
+        // Remove LIKE
+        await Comment.findByIdAndUpdate(commentId, {
+          $pull: { likedBy: userId },
+          $inc: { likes: -1 },
+        });
+
+        return res.json({ liked: false });
+      } else {
+        // Add LIKE
+        await Comment.findByIdAndUpdate(commentId, {
+          $addToSet: { likedBy: userId }, // prevents duplicates
+          $inc: { likes: +1 },
+        });
+
+        return res.json({ liked: true });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
   deleteComment: async (req, res) => {
     const p = await Comment.findById(req.params.id).populate("post");
     try {

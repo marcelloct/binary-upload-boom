@@ -13,3 +13,26 @@ likeBtn.addEventListener("click", async () => {
 
   likeBtn.classList.toggle("liked", data.liked);
 });
+
+// LIKE COMMENTS
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".likeCommentBtn");
+  if (!btn) return;
+
+  const commentId = btn.dataset.comment;
+
+  console.log("commentId:", commentId); // DEBUG
+
+  const res = await fetch(`/comment/${commentId}/likeComment`, {
+    method: "POST",
+  });
+
+  const data = await res.json();
+
+  btn.classList.toggle("liked", data.liked);
+
+  const countEl = document.getElementById(`commentCount-${commentId}`);
+
+  const currentCount = parseInt(countEl.textContent, 10);
+  countEl.textContent = data.liked ? currentCount + 1 : currentCount - 1;
+});

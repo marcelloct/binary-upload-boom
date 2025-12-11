@@ -51,14 +51,10 @@
             <span><%= comments[i].comment%></span>
             <br>
             <span>
-              <form
-                class="col-1"
-                action="/comment/likeComment/<%=comments[i]._id %>?_method=PUT"
-                method="POST"
-              >
-                <button class="btn btn-primary fa fa-heart" type="submit"></button>
-              </form>
-              <h3 class="col-3">Likes: <%= comments[i].likes %></h3>
+              <!-- Check if user already liked a comment and add 'liked' class to button -->
+              <button class="btn btn-default fa fa-heart likeCommentBtn <%=comments[i].likedBy.some(id => id.equals(user.id)) ? 'liked' : '' %>" data-comment="<%=comments[i]._id %>"></button>
+              <!-- Count the likes -->
+              <span class="col-3" id="commentCount-<%=comments[i]._id %>" data-comment="<%=comments[i]._id %>"><%= comments[i].likes %></span>
             </span>
           </li>
           
