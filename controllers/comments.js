@@ -18,23 +18,6 @@ module.exports = {
       console.log(err);
     }
   },
-  likeComment: async (req, res) => {
-    // Mongoose's populate() is a crucial feature for managing relationships between data in MongoDB, where data is often stored in a denormalized fashion.
-    // Simplifying, Get data from a relationship collection (ObjectId)
-    const p = await Comment.findById(req.params.id).populate("post");
-    try {
-      await Comment.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $inc: { likes: 1 },
-        }
-      );
-      console.log("Likes +1");
-      res.redirect(`/post/${p.post._id}`);
-    } catch (err) {
-      console.log(err);
-    }
-  },
   toggleLike: async (req, res) => {
     const userId = req.user._id;
     const commentId = req.params.id;
