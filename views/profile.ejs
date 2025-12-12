@@ -3,6 +3,14 @@
   <div class="row mt-5">
       <div class="col-6">
           <div>
+              <div class="user-photo">
+                <img src="<%= user.photo %>" alt="<%= user.userName %> profile photo">
+              </div>
+              <form action="/photo?_method=PATCH" method="POST" enctype="multipart/form-data">
+                <label for="photo">Change your photo</label>
+                <input type="file" name="photo" id="photo" accept="image/*" required>
+                <button type="submit">Upload</button>
+              </form>
               <p><strong>User Name</strong>: <%= user.userName %></p>
               <p><strong>Email</strong>: <%= user.email %></p>
               <a href="/logout" class="col-3 btn btn-primary">Logout</a>

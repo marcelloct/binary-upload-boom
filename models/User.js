@@ -4,6 +4,11 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
   email: { type: String, unique: true },
+  photo: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/dsxfaroro/image/upload/v1765486472/default-avatar-icon-of-social-media-user-vector_tgl3mz.jpg",
+  },
   password: String,
 });
 

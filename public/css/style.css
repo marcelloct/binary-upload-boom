@@ -1,0 +1,20 @@
+.btn-default {
+  background-color: rgb(244, 244, 244);
+}
+
+.liked {
+  background-color: rgb(78, 178, 235);
+}
+
+.user-photo {
+  width: 180px;
+  border-radius: 50%;
+  border: 5px solid #2b2b2b;
+  clip-path: circle(50% at center);
+  object-fit: cover;
+
+  img {
+    width: 100%;
+    clip-path: circle(50% at center);
+  }
+}
