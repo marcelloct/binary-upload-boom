@@ -5,6 +5,11 @@
           <div>
               <p><strong>User Name</strong>: <%= user.userName %></p>
           </div>
+          <span>
+            <% if(user.id !== loggedUser.id){%>
+              <button class="btn btn-default fa fa-solid fa-plus <%= loggedUser.friends.includes(user.id) ? 'followed' : '' %>" id="followBtn" data-follow="<%=user.id %>">Follow</button>
+            <% } %>
+          </span>
       </div>
       <div class="col-6">
         <ul class="row list-unstyled">
@@ -23,4 +28,6 @@
     </div>
   </div>
 </div>
+
+<script src="/js/follow.js"></script>
 <%- include('partials/footer') -%>

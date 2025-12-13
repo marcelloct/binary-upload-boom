@@ -2,7 +2,8 @@
   background-color: rgb(244, 244, 244);
 }
 
-.liked {
+.liked,
+.followed {
   background-color: rgb(78, 178, 235);
 }
 

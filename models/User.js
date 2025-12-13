@@ -9,6 +9,12 @@ const UserSchema = new mongoose.Schema({
     default:
       "https://res.cloudinary.com/dsxfaroro/image/upload/v1765486472/default-avatar-icon-of-social-media-user-vector_tgl3mz.jpg",
   },
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   password: String,
 });
 

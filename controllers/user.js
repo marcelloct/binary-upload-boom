@@ -58,11 +58,48 @@ module.exports = {
   },
   getUser: async (req, res) => {
     try {
+      const loggedUser = await User.findById(req.user._id);
       const user = await User.findById(req.params.id);
       const posts = await Post.find({ user: req.params.id });
-      res.render("user.ejs", { posts: posts, user: user });
+      res.render("user.ejs", {
+        posts: posts,
+        user: user,
+        loggedUser: loggedUser,
+      });
     } catch (err) {
       console.log(err);
+    }
+  },
+  toggleFriends: async (req, res) => {
+    const loggedUser = req.user.id;
+    const userToFollow = req.params.id;
+
+    console.log(loggedUser, userToFollow);
+    try {
+      const user = await User.findById(loggedUser);
+
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      const hasFollowed = user.friends.includes(userToFollow);
+
+      if (hasFollowed) {
+        // Remove LIKE
+        await User.findByIdAndUpdate(loggedUser, {
+          $pull: { friends: userToFollow },
+        });
+
+        return res.json({ follow: false });
+      } else {
+        // Add LIKE
+        await User.findByIdAndUpdate(loggedUser, {
+          $addToSet: { friends: userToFollow }, // prevents duplicates
+        });
+
+        return res.json({ follow: true });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
     }
   },
 };

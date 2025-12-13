@@ -10,6 +10,7 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //Main Routes
 router.get("/", homeController.getIndex);
 router.get("/user/:id", userController.getUser);
+router.post("/user/:id/follow", userController.toggleFriends);
 router.get("/profile", ensureAuth, userController.getProfile);
 router.patch(
   "/photo",
