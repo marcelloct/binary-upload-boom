@@ -36,3 +36,17 @@ document.addEventListener("click", async (e) => {
   const currentCount = parseInt(countEl.textContent, 10);
   countEl.textContent = data.liked ? currentCount + 1 : currentCount - 1;
 });
+
+// FAVORITES
+const favoriteBtn = document.getElementById("favoriteBtn");
+
+favoriteBtn.addEventListener("click", async () => {
+  const postId = favoriteBtn.dataset.post;
+  const res = await fetch(`${postId}/favorite`, { method: "POST" });
+  const data = await res.json();
+  console.log(data);
+
+  // Update UI
+
+  favoriteBtn.classList.toggle("favorite", data.favorite);
+});

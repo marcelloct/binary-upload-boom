@@ -3,6 +3,9 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
 
+// Mongoose's populate() is a crucial feature for managing relationships between data in MongoDB, where data is often stored in a denormalized fashion.
+// Simplifying, Get data from a relationship collection (ObjectId)
+
 module.exports = {
   getProfile: async (req, res) => {
     console.log(req.user);
@@ -70,20 +73,6 @@ module.exports = {
       console.log(err);
     }
   },
-  likePost: async (req, res) => {
-    try {
-      await Post.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $inc: { likes: 1 },
-        }
-      );
-      console.log("Likes +1");
-      res.redirect(`/post/${req.params.id}`);
-    } catch (err) {
-      console.log(err);
-    }
-  },
   deletePost: async (req, res) => {
     try {
       // Find post by id
@@ -125,6 +114,37 @@ module.exports = {
         });
 
         return res.json({ liked: true });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+  toggleFavorite: async (req, res) => {
+    const userId = req.user.id;
+    const postId = req.params.id;
+
+    try {
+      const post = await Post.findById(postId);
+
+      if (!post) return res.status(404).json({ message: "Post not found" });
+
+      const hasFavorited = post.favoritedBy.includes(userId);
+
+      if (hasFavorited) {
+        // Remove LIKE
+        await Post.findByIdAndUpdate(postId, {
+          $pull: { favoritedBy: userId },
+        });
+
+        return res.json({ favorite: false });
+      } else {
+        // Add LIKE
+        await Post.findByIdAndUpdate(postId, {
+          $addToSet: { favoritedBy: userId }, // prevents duplicates
+        });
+
+        return res.json({ favorite: true });
       }
     } catch (error) {
       console.error(error);

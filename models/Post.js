@@ -27,6 +27,12 @@ const PostSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  favoritedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

@@ -1,10 +1,13 @@
 .btn-default {
   background-color: rgb(244, 244, 244);
+  font-weight: 400;
 }
 
 .liked,
-.followed {
+.followed,
+.favorite {
   background-color: rgb(78, 178, 235);
+  font-weight: 900; /*fill the icons*/
 }
 
 .user-photo {

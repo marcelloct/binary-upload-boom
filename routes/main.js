@@ -19,6 +19,7 @@ router.patch(
   userController.updatePhoto
 );
 router.get("/feed", ensureAuth, postsController.getFeed);
+router.get("/favorites", ensureAuth, userController.getFavorites);
 
 // Routes for user login/signup
 router.get("/login", authController.getLogin);

@@ -10,16 +10,27 @@ module.exports = {
       // Since we have a session each request contains the logged-in users info: req.user
       // Grabbing just the post of the logged-in user
       const posts = await Post.find({ user: req.user.id });
-      const users = await User.findById(req.user.id).populate(
-        "friends",
-        "userName photo" // only fields you need
-      );
+      const users = await User.findById(req.user.id).populate({
+        path: "friends",
+        select: "userName photo", // only fields you need
+        options: { limit: 20 },
+      });
       // Sending post and user data feom mongodb to ejs
       res.render("profile.ejs", {
         posts: posts,
         user: req.user,
         users: users,
       });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getFavorites: async (req, res) => {
+    try {
+      const posts = await Post.find({ favoritedBy: req.user._id })
+        .sort({ createdAt: "desc" })
+        .lean();
+      res.render("favorites.ejs", { posts: posts });
     } catch (err) {
       console.log(err);
     }

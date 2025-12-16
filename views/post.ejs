@@ -6,8 +6,11 @@
       <img class="img-fluid" src="<%= post.image%>" />
       <div class="row justify-content-between">
        
-          <button class="btn btn-default fa fa-heart <%= post.likedBy.includes(user.id) ? 'liked' : '' %>" id="likeBtn" data-post="<%=post.id %>"></button>
-          <span class="col-3" id="likeCount"><%= post.likes %></span>
+        <button class="btn btn-default fa fa-heart <%= post.likedBy.includes(user.id) ? 'liked' : '' %>" id="likeBtn" data-post="<%=post.id %>"></button>
+        <span class="col-3" id="likeCount"><%= post.likes %></span>
+
+        <button class="btn btn-default fa fa-regular fa-bookmark <%= post.favoritedBy.includes(user.id) ? 'favorite' : '' %>" id="favoriteBtn" data-post="<%=post.id %>"></button>
+        <span class="col-3"><%= %></span>
           
         <%if(post.user == user.id){ %>
         <form
@@ -82,5 +85,7 @@
     </div>
   </div>
 </div>
+
+<script src="/js/main.js"></script>
 
 <%- include('partials/footer') -%>
