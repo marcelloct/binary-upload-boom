@@ -46,7 +46,27 @@
         </ul>
         <div class="row justify-content-center mt-5">
           <a class="btn btn-primary" href="/feed">Return to Feed</a>
-        </div>  
+        </div> 
+        <section class="friends">
+          <h2>Friends</h2>
+          <% if(users.friends.length === 0) { %>
+            <p>No friends yet.</p>
+          <% } else { %>
+            <ul class="friends-list">
+              <% users.friends.forEach(friend => { %>
+                <li>
+                  <a href="/user/<%=friend._id%>">
+                    <img src="<%=friend.photo%>" alt="<%=friend.userName%>">
+                  </a>
+
+                  <a href="/user/<%=friend._id%>">
+                    <%=friend.userName%>
+                  </a>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div> 
       </div>  
     </div>
   </div>

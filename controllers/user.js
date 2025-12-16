@@ -10,8 +10,16 @@ module.exports = {
       // Since we have a session each request contains the logged-in users info: req.user
       // Grabbing just the post of the logged-in user
       const posts = await Post.find({ user: req.user.id });
+      const users = await User.findById(req.user.id).populate(
+        "friends",
+        "userName photo" // only fields you need
+      );
       // Sending post and user data feom mongodb to ejs
-      res.render("profile.ejs", { posts: posts, user: req.user });
+      res.render("profile.ejs", {
+        posts: posts,
+        user: req.user,
+        users: users,
+      });
     } catch (err) {
       console.log(err);
     }
