@@ -1,0 +1,10 @@
+<form action="/search" method="GET" class="search-form">
+  <input
+    type="text"
+    name="q"
+    placeholder="Search users or posts..."
+    value="<%= typeof query !== 'undefined' ? query : '' %>"
+    required
+  />
+  <button type="submit">🔍</button>
+</form>

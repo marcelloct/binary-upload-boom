@@ -1,5 +1,6 @@
 <%- include('partials/header') -%>
 <div class="container">
+  <%- include('partials/search') -%>
   <div class="row justify-content-center mt-5">
     <div class="col-6">
       <h2><%= post.title %></h2>
@@ -8,7 +9,7 @@
        
         <button class="btn btn-default fa fa-heart <%= post.likedBy.includes(user.id) ? 'liked' : '' %>" id="likeBtn" data-post="<%=post.id %>"></button>
         <span class="col-3" id="likeCount"><%= post.likes %></span>
-
+    
         <button class="btn btn-default fa fa-regular fa-bookmark <%= post.favoritedBy.includes(user.id) ? 'favorite' : '' %>" id="favoriteBtn" data-post="<%=post.id %>"></button>
         <span class="col-3"><%= %></span>
           

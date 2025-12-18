@@ -43,6 +43,10 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
+// improves the performance of queries by allowing MongoDB to efficiently locate documents without scanning the entire collection
+// Using this for search
+PostSchema.index({ title: 1 });
+
 // MongoDB Collection named here - will give lowercase plural of name
 // e.g: Post = posts / User = users
 module.exports = mongoose.model("Post", PostSchema);

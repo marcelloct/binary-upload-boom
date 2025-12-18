@@ -1,0 +1,32 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <!-- Render User(s) -->
+  <% if (users.length > 0) { %>
+  <h3>Users</h3>
+  <ul>
+    <% users.forEach(user => { %>
+    <li>
+      <img src="<%= user.photo %>" width="32" style="border-radius: 50%" />
+      <a href="/user/<%= user._id %>"> <%= user.userName %> </a>
+    </li>
+    <% }) %>
+  </ul>
+
+  <!-- Render Post(s) -->
+  <% } %> <% if (posts.length > 0) { %>
+  <h3>Posts</h3>
+  <ul>
+    <% posts.forEach(post => { %>
+    <li>
+      <a href="/post/<%= post._id %>"> <%= post.title %> </a>
+    </li>
+    <% }) %>
+  </ul>
+  <% } %>
+
+  <!-- No Results -->
+  <% if (users.length === 0 && posts.length === 0 && query) { %>
+  <p>No results found for "<%= query %>"</p>
+  <% } %>
+</div>
+<%- include('partials/footer') -%>
