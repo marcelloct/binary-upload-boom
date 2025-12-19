@@ -7,27 +7,6 @@ const Comment = require("../models/Comment");
 // Simplifying, Get data from a relationship collection (ObjectId)
 
 module.exports = {
-  getProfile: async (req, res) => {
-    console.log(req.user);
-    try {
-      // Since we have a session each request contains the logged-in users info: req.user
-      // Grabbing just the post of the logged-in user
-      const posts = await Post.find({ user: req.user.id });
-      // Sending post and user data feom mongodb to ejs
-      res.render("profile.ejs", { posts: posts, user: req.user });
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  getUser: async (req, res) => {
-    try {
-      const user = await User.findById(req.params.id);
-      const posts = await Post.find({ user: req.params.id });
-      res.render("user.ejs", { posts: posts, user: user });
-    } catch (err) {
-      console.log(err);
-    }
-  },
   getFeed: async (req, res) => {
     try {
       const posts = await Post.find().sort({ createdAt: "desc" }).lean();
